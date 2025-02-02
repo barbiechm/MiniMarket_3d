@@ -1,6 +1,5 @@
 {
-  "devDependencies": {
-    "unocss": "^65.4.3",
+  "dependencies": {
     "vite": "^6.0.11"
   }
 }
