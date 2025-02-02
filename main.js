@@ -17,7 +17,7 @@ let composer;
 
 
 // Configuración de modelos
-const modelosBase = "./models/";
+//const modelosBase = "./models";
 const modelosFrutas = {
     "MANZANA": "manzana.gltf",
     "NARANJA": "naranja.gltf",
@@ -100,7 +100,7 @@ directionalLight.shadow.camera.bottom = -50;
     cargarModelo("SHOP.gltf");
 
     // Cargar HDR
-    hdrEquirect.load('/brown_photostudio_02_2k.hdr', (texture) => {
+    hdrEquirect.load('./brown_photostudio_02_2k.hdr', (texture) => {
         texture.mapping = THREE.EquirectangularReflectionMapping;
         scene.background = texture;
         scene.environment = texture;
@@ -174,7 +174,7 @@ function crearBotonParaObjeto(objeto) {
 
 // CARGAR MODELO DE LA ESCENA
 function cargarModelo(nombreArchivo) {
-    loader.load(`${modelosBase}${nombreArchivo}`, (gltf) => {
+    loader.load(`./models/${nombreArchivo}`, (gltf) => {
         const modelo = gltf.scene;
         scene.add(modelo);
         // Habilitar sombras para todas las mallas del modelo
