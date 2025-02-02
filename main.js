@@ -8,7 +8,7 @@ import TWEEN from 'https://cdnjs.cloudflare.com/ajax/libs/tween.js/18.6.4/tween.
 
 
 const API_URL = "https://unefa6tosistemas2025api.onrender.com/api/articulos";
-window.consultarArticulos = consultarArticulos;
+
 
 // Variables globales
 let scene, camera, renderer, objetos = [], raycaster, mouse, infoBox;
@@ -17,7 +17,7 @@ let composer;
 
 
 // Configuración de modelos
-const modelosBase = "./public/models/";
+const modelosBase = "./models/";
 const modelosFrutas = {
     "MANZANA": "manzana.gltf",
     "NARANJA": "naranja.gltf",
@@ -235,6 +235,8 @@ const zona = {
     largo: 2, 
     posicion: new THREE.Vector3(0, 17, 0) 
 };
+
+window.consultarArticulos = consultarArticulos;
 
 let espaciadoX, espaciadoZ;
 
