@@ -5,9 +5,8 @@ import { RGBELoader } from 'https://cdn.jsdelivr.net/npm/three@0.172.0/examples/
 import { EffectComposer } from 'https://cdn.jsdelivr.net/npm/three@0.172.0/examples/jsm/postprocessing/EffectComposer.js';
 import { RenderPass } from 'https://cdn.jsdelivr.net/npm/three@0.172.0/examples/jsm/postprocessing/RenderPass.js';
 import { UnrealBloomPass } from 'https://cdn.jsdelivr.net/npm/three@0.172.0/examples/jsm/postprocessing/UnrealBloomPass.js';
-
 const API_URL = "https://unefa6tosistemas2025api.onrender.com/api/articulos";
-window.consultarArticulos = consultarArticulos;
+
 
 // Variables globales
 let scene, camera, renderer, objetos = [], raycaster, mouse, infoBox;
@@ -228,6 +227,8 @@ async function consultarArticulos() {
         console.error("Error en la consulta", error);
     }
 }
+
+window.consultarArticulos = consultarArticulos;
 
 const zona = {
     ancho: 32, 
