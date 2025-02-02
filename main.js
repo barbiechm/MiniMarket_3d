@@ -2,7 +2,7 @@
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import TWEEN from 'https://cdnjs.cloudflare.com/ajax/libs/tween.js/18.6.4/tween.esm.js'; */
 
-import * as THREE from 'three';
+import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.172.0/build/three.module.js';
 import { LoadGLTFByPath } from './Helpers/ModelHelper.js';
 import { GLTFLoader} from 'three/addons/loaders/GLTFLoader.js';
 import { RGBELoader } from 'three/addons/loaders/RGBELoader.js';
