@@ -3,7 +3,9 @@ import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 import { RGBELoader } from 'three/addons/loaders/RGBELoader.js';
 import { EffectComposer } from 'three/addons/postprocessing/EffectComposer.js';
 import { RenderPass } from 'three/addons/postprocessing/RenderPass.js';
-import { UnrealBloomPass } from 'three/addons/postprocessing/UnrealBloomPass.js';
+import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
+import { DragControls } from 'three/examples/jsm/controls/DragControls.js';
+
 import TWEEN from 'https://cdnjs.cloudflare.com/ajax/libs/tween.js/18.6.4/tween.esm.js';
 
 
@@ -14,6 +16,8 @@ const API_URL = "https://unefa6tosistemas2025api.onrender.com/api/articulos";
 let scene, camera, renderer, objetos = [], raycaster, mouse, infoBox;
 let objetoSeleccionado = null, gltfCamera = null;
 let composer;
+
+
 
 
 // Configuración de modelos
@@ -44,12 +48,21 @@ const modelosFrutas = {
 const loader = new GLTFLoader();
 const hdrEquirect = new RGBELoader().setPath('./textures/');
 
+document.getElementById('empezarBtn').addEventListener('click', () => {
+    document.getElementById('loader-container').style.display = 'none';// Inicia la escena 3D después de hacer clic
+});
+
+
+
 // Configuración de la escena
 function init() {
     scene = new THREE.Scene();
     camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
     renderer = new THREE.WebGLRenderer({ antialias: true });
+
+    renderer.setSize(500,500);
     document.body.appendChild(renderer.domElement);
+   
     
     composer = new EffectComposer(renderer);
     const renderPass = new RenderPass(scene, camera);
@@ -74,18 +87,12 @@ function init() {
     scene.add(directionalLight);
  
     directionalLight.shadow.camera.near = 0.5;
-directionalLight.shadow.camera.far = 100;
-directionalLight.shadow.camera.left = -50;
-directionalLight.shadow.camera.right = 50;
-directionalLight.shadow.camera.top = 50;
-directionalLight.shadow.camera.bottom = -50;
+    directionalLight.shadow.camera.far = 100;
+    directionalLight.shadow.camera.left = -50;
+    directionalLight.shadow.camera.right = 50;
+    directionalLight.shadow.camera.top = 50;
+    directionalLight.shadow.camera.bottom = -50;
     
-
-    // Raycaster y eventos
-    raycaster = new THREE.Raycaster();
-    mouse = new THREE.Vector2();
-    window.addEventListener("click", onMouseClick, false);
-
     // Caja de información
     infoBox = document.createElement("div");
     infoBox.id = "info-column"; // Cambiamos a ID para el CSS
@@ -114,8 +121,17 @@ directionalLight.shadow.camera.bottom = -50;
         });
     });
 
+    // Cargar modelo principal
+    cargarModelo("SHOP.gltf");
+    
+   
+
     animate();
 }
+
+
+
+
 
 // Animación
 function animate() {
@@ -123,6 +139,9 @@ function animate() {
     TWEEN.update();
 
     objetos.forEach(obj => {
+        if (obj.userData.rotating !== false) {
+            obj.rotation.y += 0.01;
+        }
         obj.rotation.y += 0.01;
         if (obj && obj.userData.boton) {
             const posicionMundial = new THREE.Vector3();
@@ -140,6 +159,8 @@ function animate() {
             obj.userData.boton.style.visibility = posicionMundial.z > 1 ? "hidden" : "visible";
         }
     });
+
+    
 
     renderer.render(scene, gltfCamera || camera);
 }
@@ -167,7 +188,7 @@ function crearBotonParaObjeto(objeto) {
     });
     // Agregar el botón al DOM
     document.body.appendChild(boton);
-
+    
     // Guardar una referencia al botón en el objeto
     objeto.userData.boton = boton;
 }
@@ -183,12 +204,18 @@ function cargarModelo(nombreArchivo) {
                
                 child.receiveShadow = true; 
             }
-
-    
+           
             if (child.isCamera) {
                 console.log("📷 Cámara encontrada en GLTF:", child);
                 gltfCamera = child;
+                camera = gltfCamera; // Sincronizar cámaras
+                camera.aspect = window.innerWidth / window.innerHeight;
+                camera.updateProjectionMatrix();
+
+               
             }
+
+           
         });
 
         if (gltfCamera) {
@@ -196,9 +223,12 @@ function cargarModelo(nombreArchivo) {
         } else {
             console.warn("⚠ No se encontró una cámara en el GLTF. Usando cámara predeterminada.");
         }
+
     }, undefined, (error) => {
         console.error("Error al cargar el modelo:", error);
     });
+
+    
 }
 
 
@@ -270,9 +300,9 @@ async function agregarModelo(index, articulo) {
         });
 
 
-
         scene.add(modelo);
         objetos.push(modelo);
+    
         crearBotonParaObjeto(modelo);
         actualizarEspaciado();
         console.log("Nombre buscado:", nombreModelo);
@@ -288,6 +318,8 @@ async function agregarModelo(index, articulo) {
         scene.add(cube);
         objetos.push(cube); */
     }
+
+    
 }
 
 
@@ -304,9 +336,7 @@ function actualizarEspaciado() {
     });
 }
 
-
-
-function onMouseClick(event) {
+/* function onMouseClick(event) {
     mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
     mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
 
@@ -324,7 +354,7 @@ function onMouseClick(event) {
     }
 
   
-}
+} */
 
 
 
@@ -368,12 +398,12 @@ function volverACamaraInicial() {
     });
 
     
-    if (objetoSeleccionado) {
+   /*  if (objetoSeleccionado) {
         new TWEEN.Tween(objetoSeleccionado.position)
             .to(objetoSeleccionado.userData.posicionOriginal, 1000)
             .easing(TWEEN.Easing.Quadratic.Out)
             .start();
-    }
+    } */
 
     
     new TWEEN.Tween(gltfCamera.position)
@@ -412,4 +442,7 @@ window.addEventListener('resize', () => {
         gltfCamera.aspect = window.innerWidth / window.innerHeight;
         gltfCamera.updateProjectionMatrix();
     }
+    
+
 });
+
