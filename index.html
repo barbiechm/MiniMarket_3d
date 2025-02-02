@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tienda 3D</title>
+    <link rel="stylesheet" href="style.css">
     <style>
         body { margin: 0; overflow: hidden; font-family: Arial, sans-serif; }
         #ui { position: absolute; top: 20px; left: 20px; background: rgba(255, 255, 255, 0.8); padding: 15px; border-radius: 5px; }
@@ -15,7 +16,7 @@
         <h3>Tienda 3D</h3>
         <button id="volver" style="display: none; position: absolute; top: 20px; right: 20px; padding: 10px;">Volver</button>
 
-        <input type="text" id="cedula" placeholder="Ingrese la cédula">
+        <input type="text" id="cedula" value="31692183" disabled />
         <select id="categoria">
             <option value="DEPORTE">DEPORTE</option>
             <option value="HOGAR">HOGAR</option>
@@ -25,6 +26,7 @@
         <button onclick="consultarArticulos()">Consultar</button>
         
     </div>
+
 
     <script type="module" src="main.js"></script>
     
