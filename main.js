@@ -1,19 +1,17 @@
-/* import * as THREE from 'three';
-import { OrbitControls } from "three/addons/controls/OrbitControls.js";
-import TWEEN from 'https://cdnjs.cloudflare.com/ajax/libs/tween.js/18.6.4/tween.esm.js'; */
-
 import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.172.0/build/three.module.js';
 import { LoadGLTFByPath } from './Helpers/ModelHelper.js';
-import { GLTFLoader} from 'three/addons/loaders/GLTFLoader.js';
-import { RGBELoader } from 'three/addons/loaders/RGBELoader.js';
-import TWEEN from 'https://cdnjs.cloudflare.com/ajax/libs/tween.js/18.6.4/tween.esm.js'; // Importar TWEEN.js
-import { EffectComposer } from 'three/addons/postprocessing/EffectComposer.js';
-import { RenderPass } from 'three/addons/postprocessing/RenderPass.js';
-import { UnrealBloomPass } from 'three/addons/postprocessing/UnrealBloomPass.js';
+
+import TWEEN from 'https://cdnjs.cloudflare.com/ajax/libs/tween.js/18.6.4/tween.esm.js'; 
+// Importaciones actualizadas
+import { GLTFLoader } from 'https://cdn.jsdelivr.net/npm/three@0.172.0/examples/jsm/loaders/GLTFLoader.js';
+import { RGBELoader } from 'https://cdn.jsdelivr.net/npm/three@0.172.0/examples/jsm/loaders/RGBELoader.js';
+import { EffectComposer } from 'https://cdn.jsdelivr.net/npm/three@0.172.0/examples/jsm/postprocessing/EffectComposer.js';
+import { RenderPass } from 'https://cdn.jsdelivr.net/npm/three@0.172.0/examples/jsm/postprocessing/RenderPass.js';
+import { UnrealBloomPass } from 'https://cdn.jsdelivr.net/npm/three@0.172.0/examples/jsm/postprocessing/UnrealBloomPass.js';
 
 
 const API_URL = "https://unefa6tosistemas2025api.onrender.com/api/articulos";
-window.consultarArticulos = consultarArticulos;
+
 
 // Variables globales
 let scene, camera, renderer, objetos = [], raycaster, mouse, infoBox;
@@ -47,7 +45,7 @@ const modelosFrutas = {
 
 // Loaders
 const loader = new GLTFLoader();
-const hdrEquirect = new RGBELoader().setPath('textures/');
+const hdrEquirect = new RGBELoader().setPath('./textures/');
 
 // Configuración de la escena
 function init() {
@@ -234,6 +232,8 @@ async function consultarArticulos() {
         console.error("Error en la consulta", error);
     }
 }
+
+window.consultarArticulos = consultarArticulos;
 
 const zona = {
     ancho: 32, 
