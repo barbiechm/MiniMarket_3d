@@ -11,7 +11,7 @@ const API_URL = "https://unefa6tosistemas2025api.onrender.com/api/articulos";
 
 
 // Variables globales
-let scene, camera, renderer, objetos = [], raycaster, mouse, infoBox;
+let scene, camera, renderer, objetos = [], infoBox;
 let objetoSeleccionado = null, gltfCamera = null;
 let composer;
 
@@ -46,13 +46,11 @@ const modelosFrutas = {
 const loader = new GLTFLoader();
 const hdrEquirect = new RGBELoader().setPath('./textures/');
 
-document.getElementById('empezarBtn').addEventListener('click', () => {
+ document.getElementById('empezarBtn').addEventListener('click', () => {
     document.getElementById('loader-container').style.display = 'none';// Inicia la escena 3D después de hacer clic
-});
+}); 
 
 
-
-// Configuración de la escena
 function init() {
     scene = new THREE.Scene();
     camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
@@ -67,17 +65,14 @@ function init() {
     composer.addPass(renderPass);
 
     renderer.toneMapping = THREE.ACESFilmicToneMapping;
-    renderer.toneMappingExposure = 0.45;
-    renderer.setSize(window.innerWidth, window.innerHeight);
+   
     renderer.shadowMap.enabled = true;
     renderer.shadowMap.type = THREE.PCFSoftShadowMap;
     renderer.setPixelRatio(window.devicePixelRatio);
-    renderer.useLegacyLights = false;
-    renderer.setClearColor(0xffffff, 0);
-    renderer.outputColorSpace = THREE.SRGBColorSpace;
-
+   
+    renderer.setSize(window.innerWidth, window.innerHeight);
     // Luces
-    const ambientLight = new THREE.AmbientLight(0xffffff, 1);
+    const ambientLight = new THREE.AmbientLight(0xffffff, 0.1);
     scene.add(ambientLight);
     const directionalLight = new THREE.DirectionalLight(0xffffff, 0.9);
     directionalLight.position.set(0, 90, 15);
@@ -91,20 +86,20 @@ function init() {
     directionalLight.shadow.camera.top = 50;
     directionalLight.shadow.camera.bottom = -50;
     
-    // Caja de información
+
     infoBox = document.createElement("div");
-    infoBox.id = "info-column"; // Cambiamos a ID para el CSS
+    infoBox.id = "info-column"; 
     infoBox.style.display = "none";
     document.body.appendChild(infoBox);
 
-    // Botón de volver
+ 
     const botonVolver = document.getElementById("volver");
     botonVolver.addEventListener("click", volverACamaraInicial);
 
-    // Cargar modelo principal
+
     cargarModelo("SHOP.gltf");
 
-    // Cargar HDR
+    
     hdrEquirect.load('/brown_photostudio_02_2k.hdr', (texture) => {
         texture.mapping = THREE.EquirectangularReflectionMapping;
         scene.background = texture;
@@ -119,7 +114,7 @@ function init() {
         });
     });
 
-    // Cargar modelo principal
+
     cargarModelo("SHOP.gltf");
     
    
@@ -128,10 +123,6 @@ function init() {
 }
 
 
-
-
-
-// Animación
 function animate() {
     requestAnimationFrame(animate);
     TWEEN.update();
@@ -153,7 +144,6 @@ function animate() {
             obj.userData.boton.style.left = `${x}px`;
             obj.userData.boton.style.top = `${y}px`;
             
-            // Ocultar botones si el objeto está detrás de la cámara
             obj.userData.boton.style.visibility = posicionMundial.z > 1 ? "hidden" : "visible";
         }
     });
@@ -179,24 +169,24 @@ function crearBotonParaObjeto(objeto) {
     boton.style.zIndex = "1000";
     boton.style.transform = "translate(-50%, -50%)";
 
-    // Asignar un evento de clic al botón
+   
     boton.addEventListener("click", (e) => {
-        e.stopPropagation(); // Prevenir propagación del evento
+        e.stopPropagation(); 
         mostrarInfoObjeto(objeto);
     });
-    // Agregar el botón al DOM
+   
     document.body.appendChild(boton);
     
-    // Guardar una referencia al botón en el objeto
+    
     objeto.userData.boton = boton;
 }
 
-// CARGAR MODELO DE LA ESCENA
+
 function cargarModelo(nombreArchivo) {
     loader.load(`${modelosBase}${nombreArchivo}`, (gltf) => {
         const modelo = gltf.scene;
         scene.add(modelo);
-        // Habilitar sombras para todas las mallas del modelo
+       
         modelo.traverse((child) => {
             if (child.isMesh) {
                
@@ -206,7 +196,7 @@ function cargarModelo(nombreArchivo) {
             if (child.isCamera) {
                 console.log("📷 Cámara encontrada en GLTF:", child);
                 gltfCamera = child;
-                camera = gltfCamera; // Sincronizar cámaras
+                camera = gltfCamera; 
                 camera.aspect = window.innerWidth / window.innerHeight;
                 camera.updateProjectionMatrix();
 
